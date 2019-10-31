@@ -83,6 +83,11 @@ class GameFragment : Fragment() {
             }
         })
 
+        viewModel.timeElapsed.observe(this, Observer { newTime ->
+            Log.i("NEWTIME", "${newTime}")
+            updateTimerText(newTime.toString())
+        })
+
         return binding.root
     }
 
@@ -98,6 +103,10 @@ class GameFragment : Fragment() {
 
     private fun updateWordText(word: String) {
         binding.wordText.text = word
+    }
+
+    private fun updateTimerText(newTime:String){
+        binding.timerText.text = newTime
     }
 
     private fun updateScoreText(score: Int) {
