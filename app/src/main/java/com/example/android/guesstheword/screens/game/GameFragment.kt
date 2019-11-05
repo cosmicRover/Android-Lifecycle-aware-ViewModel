@@ -56,25 +56,35 @@ class GameFragment : Fragment() {
         Log.i("GameFragment--->>>", "Called ViewModel provider")
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
-        binding.correctButton.setOnClickListener {
-            viewModel.onCorrect()
-//            updateScoreText()
-//            updateWordText()
-        }
-        binding.skipButton.setOnClickListener {
-            viewModel.onSkip()
-//            updateScoreText()
-//            updateWordText()
-        }
+        //passing viewModel to the view which helps us directly call the onClick listener
+        //functions from the view
+        binding.gameViewModel = viewModel
 
+        //now, if we make the game fragment the lifeCycle owner, we can observe the live data changes form the view itself
+        binding.setLifecycleOwner(this)
+
+        //the onClick listeners are now on the view itself
+//
+//        binding.correctButton.setOnClickListener {
+//            viewModel.onCorrect()
+////            updateScoreText()
+////            updateWordText()
+//        }
+//        binding.skipButton.setOnClickListener {
+//            viewModel.onSkip()
+////            updateScoreText()
+////            updateWordText()
+//        }
+
+        //**the observers are being called directly from the view itself
         //the three observers for score, word and isFinished
-        viewModel.score.observe(this, Observer {newScore ->
-            updateScoreText(newScore)
-        })
-
-        viewModel.word.observe(this, Observer { newWord ->
-            updateWordText(newWord)
-        })
+//        viewModel.score.observe(this, Observer {newScore ->
+//            updateScoreText(newScore)
+//        })
+//
+//        viewModel.word.observe(this, Observer { newWord ->
+//            updateWordText(newWord)
+//        })
 
         viewModel.isFinished.observe(this, Observer {isFinished ->
             if (isFinished){
@@ -83,10 +93,10 @@ class GameFragment : Fragment() {
             }
         })
 
-        viewModel.timeElapsed.observe(this, Observer { newTime ->
-            Log.i("NEWTIME", "${newTime}")
-            updateTimerText(newTime.toString())
-        })
+//        viewModel.timeElapsed.observe(this, Observer { newTime ->
+//            Log.i("NEWTIME", "$newTime")
+//            updateTimerText(newTime.toString())
+//        })
 
         return binding.root
     }
